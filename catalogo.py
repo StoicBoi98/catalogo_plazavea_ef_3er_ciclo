@@ -4,7 +4,8 @@ def mostrar_menu():
     print("2. Mostrar catalogo")
     print("3. Buscar producto por código")
     print("4. Actualizar stock y precio")
-    print("5. Salir")
+    print("5. Eliminar producto")
+    print("6. Salir")
 
 def buscar_codigo(catalogo, codigo_buscado):
     for i in range(len(catalogo)):
@@ -108,13 +109,36 @@ def actualizar_producto(catalogo):
     catalogo[indice][2] = nueva_cantidad
     catalogo[indice][3] = nuevo_precio
     print("Producto actualizado correctamente.")
+
+def eliminar_producto(catalogo):
+    print("\n--- ELIMINAR PRODUCTO ---")
+    if len(catalogo) == 0:
+        print("No hay productos registrados aún.")
+        return
+    
+    codigo = leer_texto("Ingrese el código del producto a eliminar: ").replace(" ","").upper()
+    indice = buscar_codigo(catalogo, codigo)
+    
+    if indice == -1:
+        print(f"No se encontró ningún producto con el código '{codigo}'.")
+        return
+    
+    producto = catalogo[indice]
+    print(f"Producto encontrado: {producto[0]} | {producto[1]} | Stock: {producto[2]} | Precio: S/ {producto[3]:.2f}")
+    confirmacion = input("¿Está seguro de eliminar este producto? (S/N): ").strip().upper()
+    
+    if confirmacion == "S":
+        catalogo.pop(indice)
+        print("Producto eliminado correctamente.")
+    else:
+        print("Eliminación cancelada.")
                    
 def main():
     catalogo = []
     
     while True:
         mostrar_menu()
-        opcion = input("Elija una opción del 1 al 5: ").strip()
+        opcion = input("Elija una opción del 1 al 6: ").strip()
        
         if opcion == "1":
             registrar_producto(catalogo)
@@ -125,9 +149,11 @@ def main():
         elif opcion == "4":
             actualizar_producto(catalogo)
         elif opcion == "5":
+            eliminar_producto(catalogo)
+        elif opcion == "6":
             print("Saliendo del sistema, espere...")
             break
         else:
-            print("Opción inválida. Igrese 1, 2, 3, 4 o 5: ")
+            print("Opción inválida. Igrese 1, 2, 3, 4, 5 o 6: ")
 
 main()
