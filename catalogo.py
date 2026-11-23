@@ -1,3 +1,34 @@
+ARCHIVO_CATALOGO = "catalogo.txt"
+
+def guardar_catalogo(catalogo):
+    with open(ARCHIVO_CATALOGO, "w", encoding="utf-8") as archivo:
+        for producto in catalogo:
+            linea = f"{producto[0]}|{producto[1]}|{producto[2]}|{producto[3]:.2f}\n"
+            archivo.write(linea)
+
+def cargar_catalogo():
+    catalogo = []
+    try:
+        with open(ARCHIVO_CATALOGO, "r", encoding="utf-8") as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                if linea == "":
+                    continue
+                partes = linea.split("|")
+                if len(partes) != 4:
+                    continue
+                try:
+                    codigo = partes[0].strip().replace(" ","").upper()
+                    descripcion = partes[1].strip()
+                    cantidad = int(partes[2])
+                    precio = float(partes[3])
+                    catalogo.append([codigo, descripcion, cantidad, precio])
+                except ValueError:
+                    continue
+    except FileNotFoundError:
+        pass
+    return catalogo
+        
 def mostrar_menu():
     print("\n=== SISTEMA DE CATALOGO - PLAZA VEA ===")
     print("1. Registrar producto")
@@ -62,6 +93,7 @@ def registrar_producto(catalogo):
     
     producto = [codigo, descripcion, cantidad, precio]
     catalogo.append(producto)
+    guardar_catalogo(catalogo)
     print("Producto registrado correctamente.")
 
 def mostrar_catalogo(catalogo):
@@ -109,6 +141,7 @@ def actualizar_producto(catalogo):
     
     catalogo[indice][2] = nueva_cantidad
     catalogo[indice][3] = nuevo_precio
+    guardar_catalogo(catalogo)
     print("Producto actualizado correctamente.")
 
 def eliminar_producto(catalogo):
@@ -130,6 +163,7 @@ def eliminar_producto(catalogo):
     
     if confirmacion == "S":
         catalogo.pop(indice)
+        guardar_catalogo(catalogo)
         print("Producto eliminado correctamente.")
     else:
         print("Eliminación cancelada.")
@@ -166,7 +200,7 @@ def mostrar_reporte(catalogo):
             print(f" - {producto[0]} | {producto[1]} | Stock: {producto[2]}")
                          
 def main():
-    catalogo = []
+    catalogo = cargar_catalogo()
     
     while True:
         mostrar_menu()
