@@ -18,10 +18,14 @@ def cargar_catalogo():
                 if len(partes) != 4:
                     continue
                 try:
-                    codigo = partes[0].strip().replace(" ","").upper()
+                    codigo = partes[0].strip().replace(" ", "").upper()
                     descripcion = partes[1].strip()
                     cantidad = int(partes[2])
                     precio = float(partes[3])
+                    if codigo == "" or descripcion == "" or cantidad < 0 or precio <= 0:
+                        continue
+                    if buscar_codigo(catalogo, codigo) != -1:
+                        continue
                     catalogo.append([codigo, descripcion, cantidad, precio])
                 except ValueError:
                     continue
@@ -30,9 +34,9 @@ def cargar_catalogo():
     return catalogo
         
 def mostrar_menu():
-    print("\n=== SISTEMA DE CATALOGO - PLAZA VEA ===")
+    print("\n=== SISTEMA DE CATÁLOGO - PLAZA VEA ===")
     print("1. Registrar producto")
-    print("2. Mostrar catalogo")
+    print("2. Mostrar catálogo")
     print("3. Buscar producto por código")
     print("4. Actualizar stock y precio")
     print("5. Eliminar producto")
@@ -73,15 +77,15 @@ def leer_precio(mensaje):
         try:
              valor = float(entrada)
              if valor <= 0:
-                 print("Error: el precio debe ser mayor a 0. No se regala.") 
+                 print("Error: el precio debe ser mayor a 0.") 
              else:
                  return valor
         except ValueError:
-            print("Error: ingrese un precio númerico válido (ej. 12.50).")
+            print("Error: ingrese un precio numérico válido (ej. 12.50).")
                          
 def registrar_producto(catalogo):
     print("\n--- REGISTRAR PRODUCTO ---")
-    codigo = leer_texto("Código de producto (ej. PV001): ").replace(" ","").upper()
+    codigo = leer_texto("Código de producto (ej. PV001): ").replace(" ", "").upper()
     
     if buscar_codigo(catalogo, codigo) != -1:
         print(f"Error: el código '{codigo}' ya existe en el catálogo.")
@@ -97,7 +101,7 @@ def registrar_producto(catalogo):
     print("Producto registrado correctamente.")
 
 def mostrar_catalogo(catalogo):
-    print("\n--- CATALOGO DE PRODUCTOS ---")
+    print("\n--- CATÁLOGO DE PRODUCTOS ---")
     if len(catalogo) == 0:
         print("No hay productos registrados aún.")
         return
@@ -111,7 +115,7 @@ def buscar_producto(catalogo):
         print("No hay productos registrados aún.")
         return
     
-    codigo = leer_texto("Ingrese el código a buscar: ").replace(" ","").upper()
+    codigo = leer_texto("Ingrese el código a buscar: ").replace(" ", "").upper()
     indice = buscar_codigo(catalogo, codigo)
     
     if indice == -1:
@@ -126,7 +130,7 @@ def actualizar_producto(catalogo):
         print("No hay productos registrados aún.")
         return
     
-    codigo = leer_texto("Ingrese el código del producto a actualizar: ").replace(" ","").upper()
+    codigo = leer_texto("Ingrese el código del producto a actualizar: ").replace(" ", "").upper()
     indice = buscar_codigo(catalogo, codigo)
     
     if indice == -1:
@@ -150,7 +154,7 @@ def eliminar_producto(catalogo):
         print("No hay productos registrados aún.")
         return
     
-    codigo = leer_texto("Ingrese el código del producto a eliminar: ").replace(" ","").upper()
+    codigo = leer_texto("Ingrese el código del producto a eliminar: ").replace(" ", "").upper()
     indice = buscar_codigo(catalogo, codigo)
     
     if indice == -1:
@@ -222,6 +226,7 @@ def main():
             print("Saliendo del sistema, espere...")
             break
         else:
-            print("Opción inválida. Igrese 1, 2, 3, 4, 5, 6 o 7: ")
-            
-main()
+            print("Opción inválida. Ingrese 1, 2, 3, 4, 5, 6 o 7: ")
+if __name__ == "__main__":
+    main()
+
