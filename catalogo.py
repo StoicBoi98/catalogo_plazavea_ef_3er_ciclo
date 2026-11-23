@@ -10,17 +10,51 @@ def buscar_codigo(catalogo, codigo_buscado):
             return i
     return -1
 
+def leer_texto(mensaje):
+    while True:
+        texto = input(mensaje).strip()
+        if texto == "":
+            print("Error: este campo no puede quedar vacío.")
+        elif "|" in texto:
+            print("Error: no se permite usar el símbolo '|'.")
+        else:
+            return texto
+
+def leer_cantidad(mensaje):
+    while True:
+        entrada = input(mensaje).strip()
+        try:
+            valor = int(entrada)
+            if valor < 0:
+                print("Error: la cantidad no puede ser negativa.")
+            else:
+                return valor
+        except ValueError:
+            print("Error: ingrese un número entero válido.")
+
+def leer_precio(mensaje):
+    while True:
+        entrada = input(mensaje).strip()
+        try:
+             valor = float(entrada)
+             if valor <= 0:
+                 print("Error: el precio debe ser mayor a 0. No se regala.") 
+             else:
+                 return valor
+        except ValueError:
+            print("Error: ingrese un precio númerico válido (ej. 12.50).")
+                         
 def registrar_producto(catalogo):
     print("\n--- REGISTRAR PRODUCTO ---")
-    codigo = input("Código de producto (ej. PV001): ").strip().replace(" ","").upper()
+    codigo = leer_texto("Código de producto (ej. PV001): ").replace(" ","").upper()
     
     if buscar_codigo(catalogo, codigo) != -1:
         print(f"Error: el código '{codigo}' ya existe en el catálogo.")
         return
     
-    descripcion = input("Descripción: ").strip()
-    cantidad = int(input("Cantidad disponible: "))
-    precio = float(input("Precio de venta (S/): "))
+    descripcion = leer_texto("Descripción: ")
+    cantidad = leer_cantidad("Cantidad disponible: ")
+    precio = leer_precio("Precio de venta (S/): ")
     
     producto = [codigo, descripcion, cantidad, precio]
     catalogo.append(producto)
