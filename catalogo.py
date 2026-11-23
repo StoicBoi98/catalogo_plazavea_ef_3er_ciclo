@@ -75,11 +75,11 @@ def leer_precio(mensaje):
     while True:
         entrada = input(mensaje).strip()
         try:
-             valor = float(entrada)
-             if valor <= 0:
-                 print("Error: el precio debe ser mayor a 0.") 
-             else:
-                 return valor
+            valor = float(entrada)
+            if valor <= 0:
+                print("Error: el precio debe ser mayor a 0.") 
+            else:
+                return valor
         except ValueError:
             print("Error: ingrese un precio numérico válido (ej. 12.50).")
                          
@@ -226,7 +226,9 @@ def main():
             print("Saliendo del sistema, espere...")
             break
         else:
-            print("Opción inválida. Ingrese 1, 2, 3, 4, 5, 6 o 7: ")
+            print("Opción inválida. Ingrese 1, 2, 3, 4, 5, 6 o 7.")
+
+
 if __name__ == "__main__":
     main()
-
+    
