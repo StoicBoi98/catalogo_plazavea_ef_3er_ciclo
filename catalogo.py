@@ -5,7 +5,8 @@ def mostrar_menu():
     print("3. Buscar producto por código")
     print("4. Actualizar stock y precio")
     print("5. Eliminar producto")
-    print("6. Salir")
+    print("6. Reporte resumen del inventario")
+    print("7. Salir")
 
 def buscar_codigo(catalogo, codigo_buscado):
     for i in range(len(catalogo)):
@@ -132,13 +133,44 @@ def eliminar_producto(catalogo):
         print("Producto eliminado correctamente.")
     else:
         print("Eliminación cancelada.")
-                   
+
+def mostrar_reporte(catalogo):
+    print("\n--- REPORTE RESUMEN DEL INVENTARIO ---")
+    if len(catalogo) == 0:
+        print("No hay productos registrados aún.")
+        return
+    
+    total_productos = len(catalogo)
+    total_unidades = 0
+    valor_total = 0.0
+    stock_bajo = []
+    
+    for producto in catalogo:
+        cantidad = producto[2]
+        precio = producto[3]
+        total_unidades += cantidad
+        valor_total += cantidad * precio
+        
+        if cantidad <= 5:
+            stock_bajo.append(producto)
+            
+    print(f"Total de productos distintos: {total_productos}")
+    print(f"Total de unidades en stock: {total_unidades}")
+    print(f"Valor total del inventario: S/ {valor_total:.2f}")
+    
+    if len(stock_bajo) == 0:
+        print("Alerta de stock bajo (<=5): Ninguno.")
+    else:
+        print("Alerta de stock bajo (<=5):")
+        for producto in stock_bajo:
+            print(f" - {producto[0]} | {producto[1]} | Stock: {producto[2]}")
+                         
 def main():
     catalogo = []
     
     while True:
         mostrar_menu()
-        opcion = input("Elija una opción del 1 al 6: ").strip()
+        opcion = input("Elija una opción del 1 al 7: ").strip()
        
         if opcion == "1":
             registrar_producto(catalogo)
@@ -151,9 +183,11 @@ def main():
         elif opcion == "5":
             eliminar_producto(catalogo)
         elif opcion == "6":
+            mostrar_reporte(catalogo)
+        elif opcion == "7":
             print("Saliendo del sistema, espere...")
             break
         else:
-            print("Opción inválida. Igrese 1, 2, 3, 4, 5 o 6: ")
-
+            print("Opción inválida. Igrese 1, 2, 3, 4, 5, 6 o 7: ")
+            
 main()
